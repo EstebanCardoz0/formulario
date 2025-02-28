@@ -1,0 +1,185 @@
+:root {
+    /* Variables para el tema claro */
+    --color-fondo: #f5f5f5;
+    --color-container: #ffffff;
+    --color-texto: #333333;
+    --color-borde: #dddddd;
+    --color-boton: #4CAF50;
+    --color-boton-hover: #45a049;
+    --color-texto-boton: white;
+    --color-sombra: rgba(0, 0, 0, 0.1);
+    --color-success-bg: #dff0d8;
+    --color-success-text: #3c763d;
+    --color-success-border: #d6e9c6;
+    --color-error-bg: #f2dede;
+    --color-error-text: #a94442;
+    --color-error-border: #ebccd1;
+}
+
+/* Tema oscuro */
+.dark-mode {
+    --color-fondo: #222222;
+    --color-container: #333333;
+    --color-texto: #e0e0e0;
+    --color-borde: #555555;
+    --color-boton: #5da861;
+    --color-boton-hover: #4a9c4e;
+    --color-texto-boton: #ffffff;
+    --color-sombra: rgba(0, 0, 0, 0.3);
+    --color-success-bg: #2a5a30;
+    --color-success-text: #a3d9a8;
+    --color-success-border: #3d7a43;
+    --color-error-bg: #5e2d2d;
+    --color-error-text: #e0a0a0;
+    --color-error-border: #8c4646;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    transition: all 0.3s ease;
+}
+
+.container {
+    background-color: var(--color-container);
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 2px 10px var(--color-sombra);
+}
+
+h1 {
+    color: var(--color-texto);
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid var(--color-borde);
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: var(--color-container);
+    color: var(--color-texto);
+    transition: all 0.3s ease;
+}
+
+button {
+    background-color: var(--color-boton);
+    color: var(--color-texto-boton);
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: var(--color-boton-hover);
+}
+
+#resultado {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 4px;
+    display: none;
+}
+
+.success {
+    background-color: var(--color-success-bg);
+    color: var(--color-success-text);
+    border: 1px solid var(--color-success-border);
+}
+
+.error {
+    background-color: var(--color-error-bg);
+    color: var(--color-error-text);
+    border: 1px solid var(--color-error-border);
+}
+
+/* Estilos para el switch de modo oscuro */
+.theme-switch-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.theme-switch {
+    display: inline-block;
+    height: 24px;
+    position: relative;
+    width: 48px;
+}
+
+.theme-switch input {
+    display: none;
+}
+
+.slider {
+    background-color: #ccc;
+    bottom: 0;
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    background-color: white;
+    bottom: 4px;
+    content: "";
+    height: 16px;
+    left: 4px;
+    position: absolute;
+    transition: .4s;
+    width: 16px;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--color-boton);
+}
+
+input:checked + .slider:before {
+    transform: translateX(24px);
+}
+
+.theme-switch-label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+/* Icono sol/luna para el switch */
+.slider:after {
+    color: var(--color-texto-boton);
+    display: block;
+    position: absolute;
+    font-size: 12px;
+    left: 30px;
+    top: 4px;
+    content: "🌙";
+}
+
+input:not(:checked) + .slider:after {
+    content: "☀️";
+    left: 8px;
+}
