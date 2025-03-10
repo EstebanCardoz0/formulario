@@ -1,207 +1,124 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" data-bs-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario de Viáticos</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         :root {
-            /* Tema claro */
-            --fondo: #f4f4f4;
-            --fondo-contenedor: white;
-            --texto: #333;
-            --borde: #ddd;
-            --boton-fondo: #4CAF50;
-            --boton-hover: #45a049;
-            --boton-texto: white;
+            --header-bg-light: #0066cc;
+            --text-color-light: #ffffff;
+            --box-shadow-light: rgba(0, 0, 0, 0.1);
         }
 
-        .dark-mode {
-            /* Tema oscuro */
-            --fondo: #121212;
-            --fondo-contenedor: #1e1e1e;
-            --texto: #e0e0e0;
-            --borde: #444;
-            --boton-fondo: #45a049;
-            --boton-hover: #4CAF50;
-            --boton-texto: white;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
+        .form-container {
+            max-width: 700px;
             margin: 0 auto;
-            padding: 20px;
-            background-color: var(--fondo);
-            color: var(--texto);
+            box-shadow: 0 4px 15px var(--box-shadow-light);
+            border-radius: 10px;
             transition: all 0.3s ease;
         }
 
-        .container {
-            background-color: var(--fondo-contenedor);
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .theme-toggle {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 20px;
-        }
-
-        .theme-switch {
-            display: flex;
-            align-items: center;
-        }
-
-        .theme-switch label {
-            margin-right: 10px;
-        }
-
-        h1 {
-            text-align: center;
-            color: var(--texto);
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--borde);
-            border-radius: 4px;
-            background-color: var(--fondo-contenedor);
-            color: var(--texto);
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: var(--boton-fondo);
-            color: var(--boton-texto);
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: var(--boton-hover);
-        }
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 24px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 24px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 16px;
-            width: 16px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background-color: #2196F3;
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(26px);
+        .header-bg {
+            background-color: var(--header-bg-light);
+            color: var(--text-color-light);
+            border-radius: 10px 10px 0 0;
+            padding: 20px;
+            transition: background-color 0.3s ease;
         }
     </style>
 </head>
-<body>
-<div class="container">
-    <div class="theme-toggle">
-        <div class="theme-switch">
-            <label>Modo Oscuro</label>
-            <label class="switch">
-                <input type="checkbox" id="darkModeToggle">
-                <span class="slider"></span>
-            </label>
+<body class="bg-light">
+
+<div class="container py-5">
+    <div class="form-container bg-white">
+        <div class="header-bg text-center">
+            <h1>Solicitud de Viáticos</h1>
+            <p class="lead mb-0">Complete el formulario para generar su solicitud</p>
+        </div>
+
+
+
+        <div th:if="${mensajeExito}" class="alert alert-success mx-4 mt-4" th:text="${mensajeExito}"></div>
+
+        <div class="p-4">
+            <form th:action="@{/generarPDF}" method="post" class="needs-validation" novalidate>
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre Completo</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                    <div class="invalid-feedback">El nombre es obligatorio</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="monto" class="form-label">Monto Solicitado</label>
+                    <div class="input-group">
+                        <span class="input-group-text">$</span>
+                        <input type="number" class="form-control" id="monto" name="monto" min="0" step="0.01" required>
+                        <div class="invalid-feedback">Ingrese un monto válido</div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="localidad" class="form-label">Localidad de Destino</label>
+                    <input type="text" class="form-control" id="localidad" name="localidad" required>
+                    <div class="invalid-feedback">La localidad es obligatoria</div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="fecha" class="form-label">Fecha del Viaje</label>
+                    <input type="date" class="form-control" id="fecha" name="fecha" required>
+                    <div class="invalid-feedback">Seleccione una fecha</div>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="bi bi-file-earmark-pdf"></i> Generar Solicitud
+                    </button>
+                    <div id="successMessage" class="alert alert-success mt-3" style="display: none;">
+                        PDF generado correctamente. ¿Desea generar otra solicitud?
+                        <button type="button" class="btn btn-success btn-sm ms-2" onclick="window.location.reload();">
+                            Nueva Solicitud
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
-
-    <h1>Formulario de Viáticos</h1>
-
-    <form action="/generarPDF" method="post">
-        <div class="form-group">
-            <label for="nombre">Nombre Completo:</label>
-            <input type="text" id="nombre" name="nombre" required>
-        </div>
-
-        <div class="form-group">
-            <label for="monto">Monto Solicitado ($):</label>
-            <input type="number" id="monto" name="monto" min="0" step="0.01" required>
-        </div>
-
-        <div class="form-group">
-            <label for="localidad">Localidad de Destino:</label>
-            <input type="text" id="localidad" name="localidad" required>
-        </div>
-
-        <div class="form-group">
-            <label for="fecha">Fecha del Viaje:</label>
-            <input type="date" id="fecha" name="fecha" required>
-        </div>
-
-        <button type="submit">Generar PDF</button>
-    </form>
 </div>
 
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    const body = document.body;
+    // Validación de formulario
+    (function() {
+        'use strict';
 
-    // Verificar preferencia guardada
-    if (localStorage.getItem('darkMode') === 'enabled') {
-        body.classList.add('dark-mode');
-        darkModeToggle.checked = true;
-    }
+        // Fetch all forms we want to apply validation to
+        var forms = document.querySelectorAll('.needs-validation');
 
-    darkModeToggle.addEventListener('change', () => {
-        if (darkModeToggle.checked) {
-            body.classList.add('dark-mode');
-            localStorage.setItem('darkMode', 'enabled');
-        } else {
-            body.classList.remove('dark-mode');
-            localStorage.removeItem('darkMode');
-        }
-    });
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms).forEach(function(form) {
+            form.addEventListener('submit', function(event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                } else {
+                    // Si el formulario es válido, mostrar mensaje después de un pequeño retraso
+                    // para simular que la descarga ya ocurrió
+                    setTimeout(function() {
+                        document.getElementById('successMessage').style.display = 'block';
+                    }, 2000);
+                }
+
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
 </script>
 </body>
 </html>
